@@ -2,51 +2,46 @@
 
 AI-powered WhatsApp assistant that runs in Termux on Android.
 
-## Features
-
-- **Polished terminal UI** — responsive, animated, mobile-friendly
-- **Firebase auth** — username/password accounts shared with the website
-- **OpenRouter AI** — real replies with model failover and quota handling
-- **WhatsApp listener bridge** — NDJSON event bus to an Android `NotificationListenerService`
-- **Duplicate suppression** — never answers the same message twice
-- **Server-authoritative billing** — local state can never grant Pro
-
 ## Install
 
 ```bash
 pkg install python
 pip install -r requirements.txt
-cp .env.example .env   # fill in OPENROUTER_API_KEY
 python start.py
 ```
 
+No `.env` file needed — all config is built in.
+
+## Features
+
+- Polished responsive terminal UI
+- Firebase auth (accounts shared with the website)
+- OpenRouter AI with model failover
+- WhatsApp listener bridge (NDJSON event bus)
+- Duplicate suppression
+- Server-authoritative billing — local state can never grant Pro
+
 ## Configure
 
-| Variable | Purpose |
+Edit `tool/config/settings.py` to change:
+
+| Setting | Default |
 | --- | --- |
-| `SHIPU_API_URL` | Render backend URL. Empty = local-only mode. |
-| `OPENROUTER_API_KEY` | AI key from https://openrouter.ai/keys |
-| `OPENROUTER_MODEL` | Primary model |
-| `OPENROUTER_FALLBACK_MODELS` | Comma-separated failover models |
-| `SHIPU_FREE_DAILY_REPLIES` | Free-tier daily cap |
-| `SHIPU_PRO_PRICE_CENTS` | Pro price in cents |
-| `SHIPU_PRO_DURATION_DAYS` | Pro duration |
+| `OPENROUTER_MODEL` | `liquid/lfm-2.5-26b:free` |
+| `OPENROUTER_FALLBACK_MODELS` | `dots-studio/dots-3-note-preview:free,...` |
+| `SHIPU_FREE_DAILY_REPLIES` | `25` |
+| `SHIPU_PRO_PRICE_CENTS` | `1200` |
+| `SHIPU_PRO_DURATION_DAYS` | `30` |
 
 ## Android listener
 
-See `android/` in the main repo for the `NotificationListenerService` that
-writes inbound messages to the bridge directory and types replies back.
-
-Set `SHIPU_BRIDGE_DIR` on both sides to the same path.
+Set `SHIPU_BRIDGE_DIR` on both the Android app and Termux to the same path.
 
 ## Security
 
-- Server-only secrets (`FIREBASE_ADMIN_CREDENTIALS`, `PAYMENT_SECRET`,
-  `WEBHOOK_SECRET`) are refused at startup.
-- `plan`, `subscription`, `payments`, and `admins` are write-locked in
-  Firebase rules — only the Admin SDK can change them.
-- All ShiPu data lives under the `shipuwp/` namespace; the root `users/` and
-  `bot/` nodes belong to another app and are never touched.
+- Server-only secrets are refused at startup.
+- `plan`, `subscription`, `payments`, `admins` are write-locked in Firebase.
+- All data lives under `shipuwp/` — the shared project's root nodes are never touched.
 
 ## Test
 
