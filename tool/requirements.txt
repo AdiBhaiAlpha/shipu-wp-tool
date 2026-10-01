@@ -1,0 +1,13 @@
+# ShiPu WP - Termux agent
+#
+# Core UI (required)
+rich>=13.7,<15
+
+# --- Optional, only needed once the matching phase is implemented ---
+# Firebase Auth + Realtime Database (PHASE 2-3)
+# requests>=2.31,<3
+#
+# OpenRouter AI gateway (PHASE 11) uses `requests` as well.
+#
+# NOTE: never add credentials here. Secrets live in ../.env (git-ignored)
+# and are declared in ../.env.example as placeholders only.

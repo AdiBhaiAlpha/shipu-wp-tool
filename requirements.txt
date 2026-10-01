@@ -1,0 +1,3 @@
+# Convenience alias so `pip install -r requirements.txt` works from the root.
+# The Termux app itself lives in tool/ - see tool/requirements.txt.
+-r tool/requirements.txt
