@@ -202,7 +202,7 @@ def load() -> Config:
     )
     ai = AIConfig(
         base_url="https://openrouter.ai/api/v1",
-        api_key="OPENROUTER_API_KEY_PLACEHOLDER",
+        api_key=pick("OPENROUTER_API_KEY", "openrouterApiKey"),
         model="liquid/lfm-2.5-26b:free",
     )
     pricing = Pricing(
